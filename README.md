@@ -13,18 +13,6 @@ A modern Point of Sale system with AI-powered camera detection for cafes and res
 - **📊 Statistics Dashboard**: Track items scanned, orders completed, and revenue
 - **📤 Export Orders**: Download order data in JSON format with timestamps
 - **🌙 Dark Theme**: Modern slate/blue color scheme with responsive design
-
-## 📋 Supported Products
-
-| Arabic Name | English Name | Price (DZD) |
-|-------------|--------------|-------------|
-| قهوة سادة | Black Coffee | 100 |
-| قهوة بالحليب | Coffee with Milk | 120 |
-| نسكافيه | Nescafe | 80 |
-| عصير برتقال | Orange Juice | 150 |
-| كابتشينو | Cappuccino | 140 |
-| شاي | Tea | 50 |
-
 ## 🚀 Getting Started
 
 ### Prerequisites
