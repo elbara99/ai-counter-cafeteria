@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS System with AI Camera Detection</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- TensorFlow.js for Custom Model -->
+    <!-- Using unpkg CDN for reliability -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <h1>☕ POS System</h1>
+            <div class="camera-status" id="cameraStatus">
+                <span class="status-indicator"></span>
+                <span class="status-text">Camera Off</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Camera Section -->
+        <section class="camera-section">
+            <div class="section-header">
+                <h2>📷 Camera Feed</h2>
+                <div class="camera-controls">
+                    <button id="startCameraBtn" class="btn btn-primary">
+                        📷 Start Camera
+                    </button>
+                    <button id="stopCameraBtn" class="btn btn-danger" disabled>
+                        ⏹ Stop Camera
+                    </button>
+                </div>
+            </div>
+            
+            <div class="video-container" id="videoContainer">
+                <video id="videoFeed" autoplay playsinline muted></video>
+                <canvas id="detectionCanvas"></canvas>
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <p>Click "Start Camera" to begin</p>
+                </div>
+                <div class="error-message" id="cameraError"></div>
+            </div>
+
+            <div class="scan-controls">
+                <button id="scanBtn" class="btn btn-success" disabled>
+                    🔍 Scan Products
+                </button>
+                <button id="continuousScanBtn" class="btn btn-secondary" disabled>
+                    ▶️ Continuous Scan
+                </button>
+            </div>
+
+            <!-- Model Status -->
+            <div class="model-status" id="modelStatus">
+                <div class="model-indicator">
+                    <span class="model-icon">🤖</span>
+                    <span class="model-text">AI Model: <span id="modelStatusText">Loading...</span></span>
+                </div>
+            </div>
+
+            <!-- Detected Products Display -->
+            <div class="detected-products" id="detectedProducts">
+                <h3>🎯 Detected Products</h3>
+                <div id="detectedList" class="detected-list">
+                    <p class="no-detection">Point camera at products and scan</p>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions-card">
+                <h3>📌 How to Use</h3>
+                <ol>
+                    <li>Click "Start Camera" to enable webcam</li>
+                    <li>Wait for AI model to load (shown in status)</li>
+                    <li>Point camera at coffee cup or water glass</li>
+                    <li>Click "Scan Products" to detect items</li>
+                    <li>Or use "Continuous Scan" for real-time detection</li>
+                    <li>Review cart and complete order</li>
+                </ol>
+                <div class="demo-notice">
+                    <strong>🤖 Custom 3-Class Model:</strong> This system uses your custom Teachable Machine model 
+                    trained to detect: Coffee (caffee), Water, and Empty.
+                    <br><br>
+                    <strong>Products:</strong> قهوة / Coffee - 100 DZD | ماء / Water - 30 DZD
+                    <br><br>
+                    <strong>Note:</strong> "Empty" is ignored (no product added)
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section class="cart-section">
+            <div class="section-header">
+                <h2>🛒 Shopping Cart</h2>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart-message">Cart is empty. Start scanning products!</p>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Items:</span>
+                    <span id="cartItemCount">0</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="cartTotal">0 DZD</span>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <button id="clearCartBtn" class="btn btn-warning" disabled>
+                    🗑 Clear Cart
+                </button>
+                <button id="completeOrderBtn" class="btn btn-success" disabled>
+                    ✅ Complete Order
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Statistics Dashboard -->
+    <section class="stats-dashboard">
+        <h2>📊 Statistics Dashboard</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="itemsScanned">0</div>
+                    <div class="stat-label">Items Scanned</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="ordersCompleted">0</div>
+                    <div class="stat-label">Orders Completed</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="totalRevenue">0 DZD</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Export Section -->
+    <section class="export-section">
+        <button id="exportBtn" class="btn btn-secondary">
+            📤 Export Orders (JSON)
+        </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>POS System with AI Camera Detection | Custom Coffee & Water Model</p>
+    </footer>
+
+    <!-- JavaScript Modules -->
+    <script src="js/stats.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/detection.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
